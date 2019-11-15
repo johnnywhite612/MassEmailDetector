@@ -30,7 +30,7 @@ app.post('/emails', function (req, res) {
 
   let authKey = process.env.auth;
   if(params.Authentication !== authKey){
-    res.send("Authentication Failed!");
+    res.send({error: true, error_type: "auth");
     return;
   }
 
@@ -48,6 +48,11 @@ app.post('/emails', function (req, res) {
            AND receiver = ${params.receiver}
            AND received = ${params.received} ;
     `, function (error, count, fields) {
+
+      if (error) {
+        res.send({error: true, error_type: "internal"});
+        return;
+      }
 
       console.log(`
       SELECT COUNT(*) FROM emails
@@ -68,15 +73,14 @@ app.post('/emails', function (req, res) {
     console.log(query);
     dbConn.query(query, function (error, data, fields) {
       try {
-        // if (error) throw error;
         if (error) {
-          res.send('ERROR: ' + error);
+          res.send({error: true, error_type: "internal");
         } else {
           //FRANK's CODE
           med(params.sender, params.receiver, params.received, res);
         }
       } catch (error) {
-        res.send(`Couldn't execute query: ${error}`);
+        res.send({error: true, error_type: "internal"});
       }
       // dbConn.end();
     });

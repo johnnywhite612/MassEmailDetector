@@ -37,15 +37,20 @@ let med = function (sender, receiver, date, res) {
            AND receiver = ${receiver}
            AND received = ${date} ;
     `, function (error, mail, fields) {
-            // if (error) throw error;
+            if (error) {
+                res.send({error: true, error_type: "internal"});
+                return;
+            }
 
             db.query(`
             SELECT body FROM emails
              WHERE sender = ${sender}
                AND receiver <> ${receiver} ;
         `, function (error, others, fields) {
-                    // if (error) throw error;
-                    //Other code here
+                    if (error) {
+                        res.send({error: true, error_type: "internal"});
+                        return;
+                    }
 
                     mail = mail[0];
                     // Minimum Edit Distance gives twice the number of differing words
@@ -61,7 +66,9 @@ let med = function (sender, receiver, date, res) {
                             matches++;
                     }
                     db.end();
-                    let result = { checked: others.length, matches: matches };
+                    let result = { error: false,
+                                   checked: others.length,
+                                   matches: matches };
                     res.send(result);
                     console.log("OUTPUT: "+JSON.stringify(result));
             }
