@@ -3,6 +3,7 @@
 // <https://github.com/schulzch/edit-distance-js>.
 //
 // The library is licenced under the Apache 2.0 License
+// SPDX-License-Identifier: Apache-2.0
 //
 // Adjustments were made to enable the calculation of edit distances
 // over lists as well as strings.

@@ -3,6 +3,7 @@
 // as util.js.
 //
 // The library is licenced under the Apache 2.0 License
+// SPDX-License-Identifier: Apache-2.0
 
 var Mapping,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };

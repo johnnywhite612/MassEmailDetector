@@ -1,6 +1,8 @@
 // Mass Email Detector --- Similarity Calculator
 // Author: Frank Seifferth <seifferf@tcd.ie>
 //
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
 // This script uses a modified version of the edit-distance library
 // by Christoph Schulz <https://github.com/schulzch/edit-distance-js>.
 // The relevant parts are included in this folder.
