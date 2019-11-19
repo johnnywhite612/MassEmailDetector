@@ -48,49 +48,51 @@ app.post("/emails", function(req, res) {
   params.body = SqlString.escape(params.body);
 
   console.log(JSON.stringify(params));
-  dbConn.query(
-    `
+  try {
+    dbConn.query(
+      `
         SELECT COUNT(*) FROM emails
          WHERE sender = ${params.sender}
            AND receiver = ${params.receiver}
            AND received = ${params.received} ;
     `,
-    function(error, count, fields) {
-      if (error) {
-        res.send({ error: true, error_type: "internal" });
-        return;
-      }
+      function(error, count, fields) {
+        if (error) {
+          res.send({ error: true, error_type: "internal" });
+          return;
+        }
 
-      console.log(`
+        console.log(`
       SELECT COUNT(*) FROM emails
        WHERE sender = ${params.sender}
          AND receiver = ${params.receiver}
          AND received = ${params.received} ;
   `);
-      console.log("Count is: " + JSON.stringify(count));
-      count = count[0]["COUNT(*)"];
+        console.log("Count is: " + JSON.stringify(count));
+        count = count[0]["COUNT(*)"];
 
-      if (count === 0) {
-        query = `INSERT INTO emails (sender, receiver, body, received) VALUES (${params.sender}, ${params.receiver}, ${params.body}, ${params.received});`;
-      } else {
-        query = `SELECT * FROM emails;`;
-      }
-      console.log(query);
-      dbConn.query(query, function(error, data, fields) {
-        try {
-          if (error) {
-            res.send({ error: true, error_type: "internal" });
-          } else {
-            //FRANK's CODE
-            med(params.sender, params.receiver, params.received, res);
-          }
-        } catch (error) {
-          res.send({ error: true, error_type: "internal" });
+        if (count === 0) {
+          query = `INSERT INTO emails (sender, receiver, body, received) VALUES (${params.sender}, ${params.receiver}, ${params.body}, ${params.received});`;
+        } else {
+          query = `SELECT * FROM emails;`;
         }
-        // dbConn.end();
-      });
-    }
-  );
+        console.log(query);
+        dbConn.query(query, function(error, data, fields) {
+          try {
+            if (error) {
+              res.send({ error: true, error_type: "internal" });
+            } else {
+              //FRANK's CODE
+              med(params.sender, params.receiver, params.received, res);
+            }
+          } catch (error) {
+            res.send({ error: true, error_type: "internal" });
+          }
+          // dbConn.end();
+        });
+      }
+    );
+  } catch (e) {}
 });
 
 // set port
