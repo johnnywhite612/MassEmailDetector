@@ -1,4 +1,14 @@
-# Mass Email Detector
+# Flee-Mail Backend ![](app/static/icon_1.png)
+
+This is the backend code for the Flee-Mail Mass Email
+Detector. `package.json` and `package-lock.json` are configuration
+files for Node.js specifying libraries. The source code for this
+application lives in the `app/` directory. `app/app.js` provides the main
+functionality of handling incoming connections and adding messages to our
+database. `app/med.js` provides the functionality for comparing an email
+against our database. `app/levenshtein.js` and `app/levenshtein_util.js`
+are modified parts of the [edit-distance-js] library. They are included in
+`app/` since the functionality of `app/med.js` depends on them.
 
 ## License
 
