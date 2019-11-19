@@ -30,70 +30,72 @@ app.get("/", (req, res) =>
 );
 
 //Post an email to our DB
-app.post("/emails", function(req, res) {
-  // dbConn.connect();
-  var params = req.body;
+try {
+  app.post("/emails", function(req, res) {
+    // dbConn.connect();
+    var params = req.body;
 
-  let authKey = process.env.auth;
-  if (params.Authentication !== authKey) {
-    res.send({ error: true, error_type: "auth" });
-    return;
-  }
+    let authKey = process.env.auth;
+    if (params.Authentication !== authKey) {
+      res.send({ error: true, error_type: "auth" });
+      return;
+    }
 
-  console.log("FIN 0: " + JSON.stringify(params));
+    console.log("FIN 0: " + JSON.stringify(params));
 
-  params.sender = SqlString.escape(params.sender);
-  params.receiver = SqlString.escape(params.receiver);
-  params.received = SqlString.escape(params.received);
-  params.body = SqlString.escape(params.body);
+    params.sender = SqlString.escape(params.sender);
+    params.receiver = SqlString.escape(params.receiver);
+    params.received = SqlString.escape(params.received);
+    params.body = SqlString.escape(params.body);
 
-  console.log(JSON.stringify(params));
-  try {
-    dbConn.query(
-      `
+    console.log(JSON.stringify(params));
+    try {
+      dbConn.query(
+        `
         SELECT COUNT(*) FROM emails
          WHERE sender = ${params.sender}
            AND receiver = ${params.receiver}
            AND received = ${params.received} ;
     `,
-      function(error, count, fields) {
-        if (error) {
-          res.send({ error: true, error_type: "internal" });
-          return;
-        }
+        function(error, count, fields) {
+          if (error) {
+            res.send({ error: true, error_type: "internal" });
+            return;
+          }
 
-        console.log(`
+          console.log(`
       SELECT COUNT(*) FROM emails
        WHERE sender = ${params.sender}
          AND receiver = ${params.receiver}
          AND received = ${params.received} ;
   `);
-        console.log("Count is: " + JSON.stringify(count));
-        count = count[0]["COUNT(*)"];
+          console.log("Count is: " + JSON.stringify(count));
+          count = count[0]["COUNT(*)"];
 
-        if (count === 0) {
-          query = `INSERT INTO emails (sender, receiver, body, received) VALUES (${params.sender}, ${params.receiver}, ${params.body}, ${params.received});`;
-        } else {
-          query = `SELECT * FROM emails;`;
-        }
-        console.log(query);
-        dbConn.query(query, function(error, data, fields) {
-          try {
-            if (error) {
-              res.send({ error: true, error_type: "internal" });
-            } else {
-              //FRANK's CODE
-              med(params.sender, params.receiver, params.received, res);
-            }
-          } catch (error) {
-            res.send({ error: true, error_type: "internal" });
+          if (count === 0) {
+            query = `INSERT INTO emails (sender, receiver, body, received) VALUES (${params.sender}, ${params.receiver}, ${params.body}, ${params.received});`;
+          } else {
+            query = `SELECT * FROM emails;`;
           }
-          // dbConn.end();
-        });
-      }
-    );
-  } catch (e) {}
-});
+          console.log(query);
+          dbConn.query(query, function(error, data, fields) {
+            try {
+              if (error) {
+                res.send({ error: true, error_type: "internal" });
+              } else {
+                //FRANK's CODE
+                med(params.sender, params.receiver, params.received, res);
+              }
+            } catch (error) {
+              res.send({ error: true, error_type: "internal" });
+            }
+            // dbConn.end();
+          });
+        }
+      );
+    } catch (e) {}
+  });
+} catch (e) {}
 
 // set port
 app.listen(port, function() {
