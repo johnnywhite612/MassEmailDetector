@@ -1,4 +1,4 @@
-# Flee-Mail Backend ![](img/icon.png)
+# Flee-Mail Backend ![](app/static/icon_1.png)
 
 This is the backend code for the Flee-Mail Mass Email
 Detector. `package.json` and `package-lock.json` are configuration
@@ -9,8 +9,6 @@ database. `app/med.js` provides the functionality for comparing an email
 against our database. `app/levenshtein.js` and `app/levenshtein_util.js`
 are modified parts of the [edit-distance-js] library. They are included in
 `app/` since the functionality of `app/med.js` depends on them.
-Additionally, a copy of the app's icon and logo are contained in the
-`img/` directory.
 
 ## License
 
