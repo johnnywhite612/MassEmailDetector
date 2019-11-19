@@ -25,7 +25,9 @@ var dbConn = mysql.createConnection({
 // connect to database
 
 //Define REST API endpoints
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) =>
+  res.redirect("https://practical-roentgen-6e9cc1.netlify.com/index.html")
+);
 
 //Post an email to our DB
 app.post("/emails", function(req, res) {
