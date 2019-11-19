@@ -16,15 +16,6 @@ app.use(
   })
 );
 
-// connection configurations
-var dbConn = mysql.createConnection({
-  host: "eu-cdbr-west-02.cleardb.net",
-  user: "b4bfef66f299ec",
-  password: "e43a261e",
-  database: "heroku_de7c817840124e1"
-});
-// connect to database
-
 //Define REST API endpoints
 app.get("/", (req, res) =>
   res.redirect("https://practical-roentgen-6e9cc1.netlify.com/index.html")
@@ -33,10 +24,18 @@ app.get("/", (req, res) =>
 //Post an email to our DB
 try {
   app.post("/emails", function(req, res) {
-    // dbConn.connect();
+    // connection configurations
+    var dbConn = mysql.createConnection({
+      host: process.env.host,
+      user: process.env.user,
+      password: process.env.password,
+      database: process.env.database
+    });
+    // connect to database
+
     var params = req.body;
 
-    let authKey = "w7dDaXw5yo";
+    let authKey = process.env.auth;
     if (params.Authentication !== authKey) {
       res.send({ error: true, error_type: "auth" });
       return;
