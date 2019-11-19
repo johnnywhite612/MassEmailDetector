@@ -90,7 +90,7 @@ try {
             } catch (error) {
               res.send({ error: true, error_type: "internal" });
             }
-            // dbConn.end();
+            dbConn.end();
           });
         }
       );
