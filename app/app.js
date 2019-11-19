@@ -18,10 +18,10 @@ app.use(
 
 // connection configurations
 var dbConn = mysql.createConnection({
-  host: process.env.host,
-  user: process.env.user,
-  password: process.env.password,
-  database: process.env.database
+  host: "eu-cdbr-west-02.cleardb.net",
+  user: "b4bfef66f299ec",
+  password: "e43a261e",
+  database: "heroku_de7c817840124e1"
 });
 // connect to database
 
@@ -36,7 +36,7 @@ try {
     // dbConn.connect();
     var params = req.body;
 
-    let authKey = process.env.auth;
+    let authKey = "w7dDaXw5yo";
     if (params.Authentication !== authKey) {
       res.send({ error: true, error_type: "auth" });
       return;
