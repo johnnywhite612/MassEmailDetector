@@ -30,14 +30,6 @@ app.get("/", (req, res) =>
   res.redirect("https://practical-roentgen-6e9cc1.netlify.com/index.html")
 );
 
-app.get("/icon", (req, res) =>
-  res.sendFile(path.join(__dirname + "/static/icon.png"))
-);
-
-app.get("/logo", (req, res) =>
-  res.sendFile(path.join(__dirname + "/static/logo.png"))
-);
-
 //Post an email to our DB
 try {
   app.post("/emails", function(req, res) {
