@@ -1,6 +1,4 @@
-![](app/static/icon_1.png)
-
-# Flee-Mail Mass Email Detector
+# Flee-Mail Backend ![](app/static/icon_1.png)
 
 This is the backend code for the Flee-Mail Mass Email
 Detector. `package.json` and `package-lock.json` are configuration
