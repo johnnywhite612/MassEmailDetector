@@ -7,6 +7,7 @@ var mysql = require("mysql");
 var port = process.env.PORT || 3000;
 var med = require("./med");
 var SqlString = require("sqlstring");
+var path = require("path");
 
 app.use(bodyParser.json());
 app.use(
@@ -27,6 +28,10 @@ var dbConn = mysql.createConnection({
 //Define REST API endpoints
 app.get("/", (req, res) =>
   res.redirect("https://practical-roentgen-6e9cc1.netlify.com/index.html")
+);
+
+app.get("/icon", (req, res) =>
+  res.sendFile(path.join(__dirname + "/static/icon.png"))
 );
 
 //Post an email to our DB
